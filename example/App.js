@@ -24,6 +24,7 @@ export default function App() {
         user_id: i,
         user_image: 'https://picsum.photos/200/300?random=' + Math.random(),
         user_name: 'Test User ' + i,
+        user_extra: '1hr ago',
         stories: storyArray,
       });
     }

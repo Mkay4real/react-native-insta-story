@@ -29,11 +29,13 @@ export const StoryListItem = ({
   key,
   profileImage,
   profileName,
+  profileExtra,
   duration,
   customCloseComponent,
   customSwipeUpComponent,
   onFinish,
   onClosePress,
+  onProfilePress,
   stories,
   currentPage,
   ...props
@@ -221,10 +223,22 @@ export const StoryListItem = ({
           })}
         </View>
         <View style={styles.userContainer}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity
+            onPress={() => {
+              if (onProfilePress) {
+                onProfilePress();
+              }
+            }}
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+          >
             <Image style={styles.avatarImage} source={{ uri: profileImage }} />
-            <Text style={styles.avatarText}>{profileName}</Text>
-          </View>
+            <View>
+              <Text style={styles.avatarText}>{profileName}</Text>
+              {profileExtra && (
+                <Text style={styles.avatarSubText}>{profileExtra}</Text>
+              )}
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               if (onClosePress) {
@@ -351,6 +365,12 @@ const styles = StyleSheet.create({
   },
   avatarText: {
     fontWeight: 'bold',
+    color: 'white',
+    paddingLeft: 10,
+  },
+  avatarSubText: {
+    fontWeight: 'normal',
+    fontSize: 11,
     color: 'white',
     paddingLeft: 10,
   },

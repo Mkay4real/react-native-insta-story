@@ -16,6 +16,7 @@ export const Story = ({
   style,
   onStart,
   onClose,
+  onProfilePress,
   duration,
   swipeText,
   customSwipeUpComponent,
@@ -62,6 +63,16 @@ export const Story = ({
     }
   };
 
+  function _onProfilePress(props: IUserStory) {
+    if (onProfilePress) {
+      onProfilePress(props);
+      setTimeout(() => {
+        setIsModalOpen(false);
+        onClose?.(props);
+      }, 250);
+    }
+  }
+
   function onStoryFinish(state: NextOrPrevious) {
     if (!isNullOrWhitespace(state)) {
       if (state == 'next') {
@@ -97,9 +108,11 @@ export const Story = ({
           key={i}
           profileName={x.user_name}
           profileImage={x.user_image}
+          profileExtra={x.user_extra}
           stories={x.stories}
           currentPage={currentPage}
           onFinish={onStoryFinish}
+          onProfilePress={() => _onProfilePress(x)}
           swipeText={swipeText}
           customSwipeUpComponent={customSwipeUpComponent}
           customCloseComponent={customCloseComponent}

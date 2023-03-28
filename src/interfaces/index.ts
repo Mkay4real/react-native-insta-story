@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { ColorValue, ImageStyle, TextStyle, ViewStyle } from 'react-native';
 
 export type NextOrPrevious = 'next' | 'previous';
@@ -7,6 +7,7 @@ export interface IUserStory {
   user_id: number;
   user_image: string | undefined;
   user_name: string;
+  user_extra?: string;
   stories: IUserStoryItem[];
   /** INTERNAL USE ONLY */
   seen?: boolean;
@@ -50,6 +51,8 @@ export interface StoryListItemProps {
   key: number;
   /** Name of the user - IUserStory.user_name */
   profileName: string;
+  /** Extra info of the user - IUserStory.user_extra */
+  profileExtra?: string;
   /** Profile picture of the user - IUserStory.user_image */
   profileImage: string | undefined;
   /** Time in seconds */
@@ -62,6 +65,7 @@ export interface StoryListItemProps {
   customCloseComponent?: ReactNode;
   onFinish?: (props?: any) => any;
   onClosePress: (props?: any) => any;
+  onProfilePress: (props?: any) => any;
   stories: IUserStoryItem[];
   currentPage: number;
 }
@@ -83,6 +87,8 @@ export interface StoryProps {
   onClose?: (props?: IUserStory) => any;
   /** Called when story item is loaded */
   onStart?: (props?: IUserStory) => any;
+  /** Called when user name or photo is pressed */
+  onProfilePress?: (props?: IUserStory) => any;
   /** Text of the swipe up button */
   swipeText?: string;
   /** A custom swipe up component */
