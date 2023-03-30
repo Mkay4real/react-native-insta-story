@@ -9,6 +9,8 @@ export interface IUserStory {
   user_name: string;
   user_extra?: string;
   stories: IUserStoryItem[];
+  empty?: boolean;
+  addComponent?: ReactNode;
   /** INTERNAL USE ONLY */
   seen?: boolean;
 }
@@ -29,6 +31,8 @@ interface SharedCircleListProps {
   unPressedBorderColor?: ColorValue;
   /** The color of the avatar border when seen */
   pressedBorderColor?: ColorValue;
+  /** The color of the avatar border when empty */
+  emptyBorderColor?: ColorValue;
   /** A custom size for the avatar rendered in the FlatList */
   avatarSize?: number;
   /** Display username below avatars in FlatList */

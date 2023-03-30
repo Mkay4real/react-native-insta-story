@@ -37,6 +37,9 @@ export const Story = ({
     if (onStart) {
       onStart(item);
     }
+    if (item?.empty) {
+      return;
+    }
 
     setCurrentPage(0);
     setSelectedData(newData);

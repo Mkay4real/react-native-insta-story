@@ -17,12 +17,14 @@ const StoryCircleListItem = ({
   item,
   unPressedBorderColor,
   pressedBorderColor,
+  emptyBorderColor,
   avatarSize = 60,
   showText,
   textStyle,
   handleStoryItemPress,
 }: StoryCircleListItemProps) => {
   const [isPressed, setIsPressed] = useState(item?.seen);
+  const [addComponentSize] = useState(20);
 
   const prevSeen = usePrevious(item?.seen);
 
@@ -58,6 +60,9 @@ const StoryCircleListItem = ({
             : {
                 borderColor: pressedBorderColor ?? 'grey',
               },
+          item.empty && {
+            borderColor: emptyBorderColor ?? 'transparent',
+          },
         ]}
       >
         <Image
@@ -69,6 +74,25 @@ const StoryCircleListItem = ({
           source={{ uri: item.user_image }}
           defaultSource={Platform.OS === 'ios' ? DEFAULT_AVATAR : null}
         />
+        {item.empty &&
+          (item.addComponent || (
+            <View
+              style={{
+                position: 'absolute',
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: unPressedBorderColor ?? 'blue',
+                  width: addComponentSize,
+                  height: addComponentSize,
+                  borderRadius: addComponentSize,
+                }}
+              />
+            </View>
+          ))}
       </TouchableOpacity>
       {showText && (
         <Text
