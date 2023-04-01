@@ -25,7 +25,16 @@ export interface IUserStoryItem {
   finish?: number;
 }
 
-interface SharedCircleListProps {
+interface SharedStoryProps {
+  /** The color of the avatar border when empty */
+  emptyBorderColor?: ColorValue;
+  /** A custom size for the avatar rendered in the FlatList */
+  avatarSize?: number;
+  /** A custom size or gap or spacing from the inner image */
+  ringGap?: number;
+}
+
+interface SharedCircleListProps extends SharedStoryProps {
   handleStoryItemPress: (item: IUserStory, index?: number) => void;
   /** The color of the avatar border when unseen */
   unPressedBorderColor?: ColorValue;
@@ -74,7 +83,7 @@ export interface StoryListItemProps {
   currentPage: number;
 }
 
-export interface StoryProps {
+export interface StoryProps extends SharedStoryProps {
   /** An array of IUserStory's */
   data: IUserStory[];
   /** Time in seconds */

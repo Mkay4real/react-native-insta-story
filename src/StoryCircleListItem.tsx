@@ -19,6 +19,7 @@ const StoryCircleListItem = ({
   pressedBorderColor,
   emptyBorderColor,
   avatarSize = 60,
+  ringGap = 4,
   showText,
   textStyle,
   handleStoryItemPress,
@@ -41,7 +42,7 @@ const StoryCircleListItem = ({
     setIsPressed(true);
   };
 
-  const avatarWrapperSize = avatarSize + 4;
+  const avatarWrapperSize = avatarSize + ringGap;
 
   return (
     <View style={styles.container}>

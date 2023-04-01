@@ -13,6 +13,8 @@ export const Story = ({
   data,
   unPressedBorderColor,
   pressedBorderColor,
+  emptyBorderColor,
+  ringGap,
   style,
   onStart,
   onClose,
@@ -169,6 +171,8 @@ export const Story = ({
           avatarSize={avatarSize}
           unPressedBorderColor={unPressedBorderColor}
           pressedBorderColor={pressedBorderColor}
+          emptyBorderColor={emptyBorderColor}
+          ringGap={ringGap}
           showText={showAvatarText}
           textStyle={avatarTextStyle}
         />

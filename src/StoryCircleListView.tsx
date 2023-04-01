@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import StoryCircleListItem from './StoryCircleListItem';
-import { StoryCircleListViewProps } from 'src/interfaces';
+import { StoryCircleListViewProps } from './interfaces';
 
 const StoryCircleListView = ({
   data,
   handleStoryItemPress,
   unPressedBorderColor,
   pressedBorderColor,
+  emptyBorderColor,
+  ringGap,
   avatarSize,
   showText,
   textStyle,
@@ -30,6 +32,8 @@ const StoryCircleListView = ({
             }
             unPressedBorderColor={unPressedBorderColor}
             pressedBorderColor={pressedBorderColor}
+            emptyBorderColor={emptyBorderColor}
+            ringGap={ringGap}
             item={item}
             showText={showText}
             textStyle={textStyle}

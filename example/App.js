@@ -70,6 +70,8 @@ export default function App() {
             console.log('TODO: Launch add story screen');
           }
         }}
+        ringGap={8}
+        emptyBorderColor="transparent"
         duration={10}
         customSwipeUpComponent={
           <View>
