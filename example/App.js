@@ -1,9 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import InstaStory from 'react-native-insta-story';
-
+import { Button, StyleSheet, Text, View } from 'react-native';
 export default function App() {
+  const mStoryRef = React.useRef();
   function createData() {
     const array = [];
 
@@ -62,6 +61,14 @@ export default function App() {
       <StatusBar style="auto" />
       <InstaStory
         data={createData()}
+        ref={mStoryRef}
+        duration={10}
+        unPressedBorderColor={'purple'}
+        customSwipeUpComponent={
+          <View>
+            <Text>Swipe</Text>
+          </View>
+        }
         onProfilePress={(userStory) => {
           console.log('TODO: Pressed', userStory);
         }}
@@ -72,14 +79,16 @@ export default function App() {
         }}
         ringGap={8}
         emptyBorderColor="transparent"
-        duration={10}
-        customSwipeUpComponent={
-          <View>
-            <Text>Swipe</Text>
-          </View>
-        }
-        style={{ marginTop: 30 }}
+        avatarSize={50}
+        style={{ marginTop: 90 }}
       />
+      <Button
+        onPress={() => {
+          console.log('Launch');
+          mStoryRef.current?.showStoryAtIndex(2);
+        }}
+        title="Launch User Profile Status"
+      ></Button>
     </View>
   );
 }

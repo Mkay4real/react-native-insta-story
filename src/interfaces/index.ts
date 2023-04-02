@@ -83,7 +83,15 @@ export interface StoryListItemProps {
   currentPage: number;
 }
 
+export interface StoryRef {
+  showStoryAtIndex: (index?: number) => void;
+  handleStoryItemPress: (item: IUserStory, index?: number) => void;
+  close: () => void;
+}
+
 export interface StoryProps extends SharedStoryProps {
+  /** Story ref */
+  storyRef?: React.MutableRefObject<StoryRef>;
   /** An array of IUserStory's */
   data: IUserStory[];
   /** Time in seconds */
