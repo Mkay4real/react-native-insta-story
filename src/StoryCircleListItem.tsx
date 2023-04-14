@@ -19,7 +19,7 @@ const StoryCircleListItem = ({
   pressedBorderColor,
   emptyBorderColor,
   avatarSize = 60,
-  ringGap = 4,
+  ringGap = 8,
   showText,
   textStyle,
   handleStoryItemPress,

@@ -134,6 +134,7 @@ export const Story = React.forwardRef(
             profileImage={x.user_image}
             profileExtra={x.user_extra}
             stories={x.stories}
+            userStory={x}
             currentPage={currentPage}
             onFinish={onStoryFinish}
             onProfilePress={() => _onProfilePress(x)}
