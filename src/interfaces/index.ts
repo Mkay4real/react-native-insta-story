@@ -8,6 +8,7 @@ export interface IUserStory {
   user_image: string | undefined;
   user_name: string;
   user_extra?: string;
+  user_seen?: boolean;
   stories: IUserStoryItem[];
   empty?: boolean;
   addComponent?: ReactNode;
@@ -18,6 +19,7 @@ export interface IUserStory {
 export interface IUserStoryItem {
   story_id: number;
   story_image: string | undefined;
+  story_extra: string | undefined;
   /** Function that gets called when the swipe up button is pressed */
   onPress?: (props?: any) => any;
   swipeText?: string;
@@ -73,13 +75,19 @@ export interface StoryListItemProps {
   /** Text of the swipe up button */
   swipeText?: string;
   /** A custom swipe up component */
-  customSwipeUpComponent?: ReactNode;
+  customSwipeUpComponent?: (
+    userStory?: IUserStory,
+    storyItem?: IUserStoryItem,
+    pauseAnimation?: Function,
+    resumeAnimation?: Function,
+  ) => ReactNode;
   /** A custom close component */
   customCloseComponent?: ReactNode;
   onFinish?: (props?: any) => any;
   onClosePress: (props?: any) => any;
   onProfilePress: (props?: any) => any;
   stories: IUserStoryItem[];
+  userStory?: IUserStory;
   currentPage: number;
 }
 
@@ -113,7 +121,12 @@ export interface StoryProps extends SharedStoryProps {
   /** Text of the swipe up button */
   swipeText?: string;
   /** A custom swipe up component */
-  customSwipeUpComponent?: ReactNode;
+  customSwipeUpComponent?: (
+    userStory?: IUserStory,
+    storyItem?: IUserStoryItem,
+    pauseAnimation?: Function,
+    resumeAnimation?: Function,
+  ) => ReactNode;
   /** A custom close component */
   customCloseComponent?: ReactNode;
   /** Display username below avatars in FlatList */

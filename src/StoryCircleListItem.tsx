@@ -24,7 +24,9 @@ const StoryCircleListItem = ({
   textStyle,
   handleStoryItemPress,
 }: StoryCircleListItemProps) => {
-  const [isPressed, setIsPressed] = useState(item?.seen);
+  const [isPressed, setIsPressed] = useState(
+    typeof item?.user_seen === 'boolean' ? item?.user_seen : item?.seen,
+  );
   const [addComponentSize] = useState(20);
 
   const prevSeen = usePrevious(item?.seen);

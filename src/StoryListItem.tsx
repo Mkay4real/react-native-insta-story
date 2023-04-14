@@ -12,6 +12,7 @@ import {
   Platform,
   SafeAreaView,
   PanResponderGestureState,
+  KeyboardAvoidingView,
 } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
@@ -178,133 +179,163 @@ export const StoryListItem = ({
     }
   }
 
+  function pauseAnimation() {
+    progress.stopAnimation();
+  }
+
+  function resumeAnimation() {
+    setPressed(false);
+    startAnimation();
+  }
+
   const swipeText =
     content?.[current]?.swipeText || props.swipeText || 'Swipe Up';
 
   return (
-    <GestureRecognizer
-      key={key}
-      onSwipeUp={onSwipeUp}
-      onSwipeDown={onSwipeDown}
-      config={config}
-      style={{
-        flex: 1,
-        backgroundColor: 'black',
-      }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
     >
-      <SafeAreaView>
-        <View style={styles.backgroundContainer}>
-          <Image
-            onLoadEnd={() => start()}
-            source={{ uri: content[current].story_image }}
-            style={styles.image}
-          />
-          {load && (
-            <View style={styles.spinnerContainer}>
-              <ActivityIndicator size="large" color={'white'} />
-            </View>
-          )}
-        </View>
-      </SafeAreaView>
-      <View style={{ flexDirection: 'column', flex: 1 }}>
-        <View style={styles.animationBarContainer}>
-          {content.map((index, key) => {
-            return (
-              <View key={key} style={styles.animationBackground}>
-                <Animated.View
-                  style={{
-                    flex: current == key ? progress : content[key].finish,
-                    height: 2,
-                    backgroundColor: 'white',
-                  }}
-                />
+      <GestureRecognizer
+        key={key}
+        onSwipeUp={onSwipeUp}
+        onSwipeDown={onSwipeDown}
+        config={config}
+        style={{
+          flex: 1,
+          backgroundColor: 'black',
+        }}
+      >
+        <SafeAreaView>
+          <View style={styles.backgroundContainer}>
+            <Image
+              onLoadEnd={() => start()}
+              source={{ uri: content[current].story_image }}
+              style={styles.image}
+            />
+            {load && (
+              <View style={styles.spinnerContainer}>
+                <ActivityIndicator size="large" color={'white'} />
               </View>
-            );
-          })}
+            )}
+          </View>
+        </SafeAreaView>
+        <View style={{ flexDirection: 'column', flex: 1 }}>
+          <View style={styles.animationBarContainer}>
+            {content.map((index, key) => {
+              return (
+                <View key={key} style={styles.animationBackground}>
+                  <Animated.View
+                    style={{
+                      flex: current == key ? progress : content[key].finish,
+                      height: 2,
+                      backgroundColor: 'white',
+                    }}
+                  />
+                </View>
+              );
+            })}
+          </View>
+          <View style={styles.userContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                if (onProfilePress) {
+                  onProfilePress();
+                }
+              }}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+            >
+              <Image
+                style={styles.avatarImage}
+                source={{ uri: profileImage }}
+              />
+              <View>
+                <Text style={styles.avatarText}>{profileName}</Text>
+                {(content[current].story_extra || profileExtra) && (
+                  <Text style={styles.avatarSubText}>
+                    {content[current].story_extra ?? profileExtra}
+                  </Text>
+                )}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                if (onClosePress) {
+                  onClosePress();
+                }
+              }}
+            >
+              <View style={styles.closeIconContainer}>
+                {customCloseComponent ? (
+                  customCloseComponent
+                ) : (
+                  <Text style={{ color: 'white' }}>X</Text>
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.pressContainer}>
+            <TouchableWithoutFeedback
+              onPressIn={() => progress.stopAnimation()}
+              onLongPress={() => setPressed(true)}
+              onPressOut={() => {
+                setPressed(false);
+                startAnimation();
+              }}
+              onPress={() => {
+                if (!pressed && !load) {
+                  previous();
+                }
+              }}
+            >
+              <View style={{ flex: 1 }} />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              onPressIn={() => progress.stopAnimation()}
+              onLongPress={() => setPressed(true)}
+              onPressOut={() => {
+                setPressed(false);
+                startAnimation();
+              }}
+              onPress={() => {
+                if (!pressed && !load) {
+                  next();
+                }
+              }}
+            >
+              <View style={{ flex: 1 }} />
+            </TouchableWithoutFeedback>
+          </View>
         </View>
-        <View style={styles.userContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              if (onProfilePress) {
-                onProfilePress();
-              }
-            }}
-            style={{ flexDirection: 'row', alignItems: 'center' }}
-          >
-            <Image style={styles.avatarImage} source={{ uri: profileImage }} />
-            <View>
-              <Text style={styles.avatarText}>{profileName}</Text>
-              {profileExtra && (
-                <Text style={styles.avatarSubText}>{profileExtra}</Text>
-              )}
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (onClosePress) {
-                onClosePress();
-              }
-            }}
-          >
-            <View style={styles.closeIconContainer}>
-              {customCloseComponent ? (
-                customCloseComponent
-              ) : (
-                <Text style={{ color: 'white' }}>X</Text>
-              )}
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.pressContainer}>
-          <TouchableWithoutFeedback
-            onPressIn={() => progress.stopAnimation()}
-            onLongPress={() => setPressed(true)}
-            onPressOut={() => {
-              setPressed(false);
-              startAnimation();
-            }}
-            onPress={() => {
-              if (!pressed && !load) {
-                previous();
-              }
-            }}
-          >
-            <View style={{ flex: 1 }} />
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            onPressIn={() => progress.stopAnimation()}
-            onLongPress={() => setPressed(true)}
-            onPressOut={() => {
-              setPressed(false);
-              startAnimation();
-            }}
-            onPress={() => {
-              if (!pressed && !load) {
-                next();
-              }
-            }}
-          >
-            <View style={{ flex: 1 }} />
-          </TouchableWithoutFeedback>
-        </View>
-      </View>
-      {content[current].onPress && (
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={onSwipeUp}
-          style={styles.swipeUpBtn}
-        >
-          {customSwipeUpComponent ? (
-            customSwipeUpComponent
-          ) : (
+        <View style={styles.bottomView}>
+          {content[current].onPress && (
             <>
-              <Text style={{ color: 'white', marginTop: 5 }}></Text>
-              <Text style={{ color: 'white', marginTop: 5 }}>{swipeText}</Text>
+              {customSwipeUpComponent ? (
+                customSwipeUpComponent(
+                  props.userStory,
+                  content[current],
+                  pauseAnimation,
+                  resumeAnimation,
+                )
+              ) : (
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={onSwipeUp}
+                  style={styles.swipeUpBtn}
+                >
+                  <>
+                    <Text style={{ color: 'white', marginTop: 5 }}></Text>
+                    <Text style={{ color: 'white', marginTop: 5 }}>
+                      {swipeText}
+                    </Text>
+                  </>
+                </TouchableOpacity>
+              )}
             </>
           )}
-        </TouchableOpacity>
-      )}
-    </GestureRecognizer>
+        </View>
+      </GestureRecognizer>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -322,7 +353,8 @@ const styles = StyleSheet.create({
   image: {
     width: width,
     height: height,
-    resizeMode: 'cover',
+    // resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   backgroundContainer: {
     position: 'absolute',
@@ -390,5 +422,18 @@ const styles = StyleSheet.create({
     left: 0,
     alignItems: 'center',
     bottom: Platform.OS == 'ios' ? 20 : 50,
+  },
+  bottomView: {
+    position: 'absolute',
+    bottom: Platform.OS == 'ios' ? 20 : 50,
+    left: 0,
+    right: 0,
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignSelf: 'baseline',
+    textAlignVertical: 'bottom',
+    paddingTop: '3%',
+    paddingBottom: '2%',
   },
 });
